@@ -314,7 +314,7 @@ const Index = () => {
         </div>
         {renderContent()}
       </main>
-      
+       Nicky
       <Footer />
     </div>
   );
