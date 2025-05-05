@@ -275,7 +275,7 @@ const Index = () => {
             )}
           </div>
         </main>
-
+            nicky
         {/* Footer */}
         <Footer />
       </div>
@@ -314,7 +314,6 @@ const Index = () => {
         </div>
         {renderContent()}
       </main>
-      
       <Footer />
     </div>
   );
