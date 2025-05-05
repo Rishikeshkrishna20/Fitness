@@ -1,0 +1,1 @@
+# Initialize the admin_portal app

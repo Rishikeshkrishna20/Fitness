@@ -1,0 +1,1 @@
+# Initialize the health_records app
