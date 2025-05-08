@@ -12,10 +12,10 @@ const AdminSleepLogs: React.FC = () => {
           <CardTitle>Sleep Logs</CardTitle>
           <CardDescription>Manage sleep records and patterns</CardDescription>
         </div>
-        <Button className="flex items-center gap-2">
+        {/* <Button className="flex items-center gap-2">
           <Moon className="h-4 w-4" />
           Coming Soon
-        </Button>
+        </Button> */}
       </CardHeader>
       <CardContent className="text-center py-12">
         <Moon className="h-16 w-16 mx-auto text-health-primary opacity-20 mb-4" />

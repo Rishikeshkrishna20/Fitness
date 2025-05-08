@@ -43,8 +43,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
     { id: 'workouts', label: 'Workouts', icon: <Activity className="w-5 h-5" /> },
     { id: 'nutrition', label: 'Nutrition', icon: <Utensils className="w-5 h-5" /> },
     { id: 'sleep', label: 'Sleep', icon: <Moon className="w-5 h-5" /> },
-    { id: 'vitals', label: 'Vitals', icon: <Heart className="w-5 h-5" /> },
-    { id: 'analytics', label: 'Analytics', icon: <LineChart className="w-5 h-5" /> },
+    // { id: 'vitals', label: 'Vitals', icon: <Heart className="w-5 h-5" /> },
+    // { id: 'analytics', label: 'Analytics', icon: <LineChart className="w-5 h-5" /> },
     { id: 'settings', label: 'Settings', icon: <Settings className="w-5 h-5" /> },
   ];
 

@@ -32,7 +32,7 @@ const Header: React.FC<HeaderProps> = ({
             <div className="relative pulsing-ring rounded-full p-1">
               <Activity className="w-7 h-7" />
             </div>
-            <h1 className="text-2xl font-bold hidden sm:block">LifePulse</h1>
+            <h1 className="text-2xl font-bold hidden sm:block">FitTrack</h1>
           </div>
 
           {isMobile ? (
