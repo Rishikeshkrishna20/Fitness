@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Link } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -194,6 +194,13 @@ const Index = () => {
       });
     }
   };
+
+  useEffect(() => {
+     const accessToken = localStorage.getItem("access");
+     accessToken ? setIsAuthenticated(true) : setIsAuthenticated(false)
+
+    
+  }, []);
 
   // Render different sections based on selected tab
   const renderContent = () => {

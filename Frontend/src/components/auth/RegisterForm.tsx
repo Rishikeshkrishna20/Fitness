@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { useNavigate } from 'react-router-dom';
 
 interface RegisterFormProps {
   onRegister: (userData: {
@@ -33,8 +34,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onShowLogin }) 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordError, setPasswordError] = useState('');
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const navigate = useNavigate();
+  const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
     
     if (password !== confirmPassword) {
@@ -43,19 +44,41 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onShowLogin }) 
     }
     
     setPasswordError('');
-    
-    onRegister({
-      name,
+    const payload = {
+      first_name:name,
       email,
       password,
+      password_confirm:confirmPassword,
       height: height ? parseInt(height) : undefined,
       weight: weight ? parseInt(weight) : undefined,
       gender,
       goal
-    });
+    }
+    console.log(payload)
+    try {
+      const res = await fetch("http://127.0.0.1:8000/api/users/register/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    }catch(e){
+      console.log(e)
+    }
+
+    
+    // onRegister({
+    //   name,
+    //   email,
+    //   password,
+    //   height: height ? parseInt(height) : undefined,
+    //   weight: weight ? parseInt(weight) : undefined,
+    //   gender,
+    //   goal
+    // });
   };
 
   return (
+     <div className='flex justify-center items-center min-h-screen'>
     <Card className="w-full max-w-md shadow-lg animate-fade-in">
       <CardHeader className="space-y-1">
         <div className="flex justify-center mb-4">
@@ -217,7 +240,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onShowLogin }) 
         <Button 
           variant="outline" 
           className="w-full"
-          onClick={onShowLogin}
+         onClick={() => {
+    console.log('Switching to Register');
+    // onShowRegister();
+    navigate('/login');
+  }}
         >
           Already have an account? Sign in
         </Button>
@@ -233,6 +260,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister, onShowLogin }) 
         </p>
       </CardFooter>
     </Card>
+    </div>
   );
 };
 

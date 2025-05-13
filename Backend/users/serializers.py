@@ -18,7 +18,10 @@ class UserSerializer(serializers.ModelSerializer):
                   'date_joined', 'last_login']
         read_only_fields = ['id', 'date_joined', 'last_login']
         extra_kwargs = {
-            'password': {'write_only': True}
+            'password': {'write_only': True},
+            'height': {'required': True},
+            'weight': {'required': True},
+            'gender': {'required': True},
         }
 
 
@@ -30,7 +33,8 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ['email', 'first_name', 'last_name', 'password', 'password_confirm']
+        fields = ['email', 'first_name', 'last_name', 'password', 'password_confirm', 
+                  'height', 'weight', 'gender', 'date_of_birth']
     
     def validate(self, attrs):
         if attrs['password'] != attrs['password_confirm']:
@@ -46,7 +50,10 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             email=validated_data['email'],
             password=validated_data['password'],
             first_name=validated_data.get('first_name', ''),
-            last_name=validated_data.get('last_name', '')
+            last_name=validated_data.get('last_name', ''),
+            height=validated_data['height'],
+            weight=validated_data['weight'],
+            gender=validated_data['gender']
         )
         
         # Create default preferences for the user
