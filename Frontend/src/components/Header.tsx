@@ -1,14 +1,11 @@
-
 import React from 'react';
 import { Activity, User, LogOut, Bell, Menu } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
+import { User as UserType } from '@/types/health';
 
 interface HeaderProps {
-  user: {
-    first_name: string;
-    // avatar?: string;
-  } | null;
+  user: UserType | null;
   onLogout: () => void;
   selectedTab: string;
   setSelectedTab: (tab: string) => void;
@@ -23,6 +20,9 @@ const Header: React.FC<HeaderProps> = ({
   toggleMobileMenu
 }) => {
   const isMobile = useIsMobile();
+  
+  // Get display name from either first_name, name, or email
+  const displayName = user?.first_name || user?.name || user?.email?.split('@')[0] || 'User';
 
   return (
     <header className="sticky top-0 z-10 bg-health-gradient shadow-md">
@@ -86,18 +86,18 @@ const Header: React.FC<HeaderProps> = ({
                       <Bell className="w-5 h-5" />
                     </Button>
                     <div className="flex items-center gap-2">
-                      {/* {user.avatar ? (
+                      {user.avatar ? (
                         <img 
                           src={user.avatar} 
-                          alt={user.name} 
+                          alt={displayName} 
                           className="w-8 h-8 rounded-full ring-2 ring-white/30"
                         />
                       ) : (
                         <div className="bg-white/20 rounded-full p-1">
                           <User className="w-6 h-6" />
                         </div>
-                      )} */}
-                      <span className="font-medium text-sm">{user?.first_name}</span>
+                      )}
+                      <span className="font-medium text-sm">{displayName}</span>
                     </div>
                     <Button
                       variant="ghost"

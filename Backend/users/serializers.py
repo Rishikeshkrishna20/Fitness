@@ -17,10 +17,14 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         user = self.user
         data['user'] = {
             'id': user.id,
-            'username': user.username,
             'email': user.email,
             'first_name': user.first_name,
             'last_name': user.last_name,
+            'weight': user.weight,
+            'height': user.height,
+            'gender': user.gender,
+            'date_of_birth': user.date_of_birth,
+            'profile_picture': user.profile_picture.url if user.profile_picture else None,
         }
 
         return data

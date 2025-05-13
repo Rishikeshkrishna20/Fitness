@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   X, 
@@ -35,6 +34,11 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
     setSelectedTab(tab);
     onClose();
   };
+  
+  // Get display name from either first_name, name, or email
+  const displayName = user?.first_name || user?.name || user?.email?.split('@')[0] || 'User';
+  // Get initials for avatar placeholder
+  const initials = displayName.charAt(0).toUpperCase();
 
   if (!isOpen) return null;
 
@@ -65,18 +69,18 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
                 {user.avatar ? (
                   <img 
                     src={user.avatar} 
-                    alt={user.name}
+                    alt={displayName}
                     className="w-12 h-12 rounded-full" 
                   />
                 ) : (
                   <div className="w-12 h-12 bg-health-light rounded-full flex items-center justify-center">
                     <span className="text-health-primary text-lg font-bold">
-                      {user.name.charAt(0)}
+                      {initials}
                     </span>
                   </div>
                 )}
                 <div>
-                  <p className="font-medium">{user.name}</p>
+                  <p className="font-medium">{displayName}</p>
                   <p className="text-sm text-gray-500">{user.email}</p>
                 </div>
               </div>

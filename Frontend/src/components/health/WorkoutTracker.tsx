@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Flame, Clock, Calendar, Activity, BarChart, Play, Edit, Trash2, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,17 +9,20 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { WorkoutLog } from '@/types/health';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
+import { Spinner } from '@/components/ui/spinner';
 
 interface WorkoutTrackerProps {
   workouts: WorkoutLog[];
   addWorkout: (workout: Omit<WorkoutLog, 'id'>) => void;
   deleteWorkout: (id: string) => void;
+  isLoading?: boolean;
 }
 
 const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
   workouts,
   addWorkout,
-  deleteWorkout
+  deleteWorkout,
+  isLoading = false
 }) => {
   const { toast } = useToast();
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -31,14 +33,25 @@ const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
     intensity: 'Medium' as 'Low' | 'Medium' | 'High',
     notes: ''
   });
-
-  // Filter workouts by date
-  const today = new Date().toDateString();
-  const todayWorkouts = workouts.filter(w => new Date(w.date).toDateString() === today);
   
-  // Calculate totals
-  const totalCalories = workouts.reduce((sum, workout) => sum + workout.calories, 0);
-  const totalDuration = workouts.reduce((sum, workout) => sum + workout.duration, 0);
+  // Memoized calculations
+  const [todayWorkouts, setTodayWorkouts] = useState<WorkoutLog[]>([]);
+  const [totalCalories, setTotalCalories] = useState(0);
+  const [totalDuration, setTotalDuration] = useState(0);
+  
+  // Update calculated values when workouts change
+  useEffect(() => {
+    if (workouts && workouts.length > 0) {
+      const today = new Date().toDateString();
+      setTodayWorkouts(workouts.filter(w => new Date(w.date).toDateString() === today));
+      setTotalCalories(workouts.reduce((sum, workout) => sum + workout.calories, 0));
+      setTotalDuration(workouts.reduce((sum, workout) => sum + workout.duration, 0));
+    } else {
+      setTodayWorkouts([]);
+      setTotalCalories(0);
+      setTotalDuration(0);
+    }
+  }, [workouts]);
 
   const handleAddWorkout = () => {
     if (!newWorkout.type || !newWorkout.duration || !newWorkout.calories) {
@@ -110,7 +123,13 @@ const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Total Calories</p>
-                  <h3 className="text-2xl font-bold">{totalCalories}</h3>
+                  {isLoading ? (
+                    <div className="flex items-center space-x-2 h-8">
+                      <Spinner size="sm" variant="primary" />
+                    </div>
+                  ) : (
+                    <h3 className="text-2xl font-bold">{totalCalories}</h3>
+                  )}
                 </div>
               </div>
               <BarChart className="w-12 h-12 text-gray-200" />
@@ -127,7 +146,13 @@ const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Time Active</p>
-                  <h3 className="text-2xl font-bold">{totalDuration} min</h3>
+                  {isLoading ? (
+                    <div className="flex items-center space-x-2 h-8">
+                      <Spinner size="sm" variant="primary" />
+                    </div>
+                  ) : (
+                    <h3 className="text-2xl font-bold">{totalDuration} min</h3>
+                  )}
                 </div>
               </div>
               <BarChart className="w-12 h-12 text-gray-200" />
@@ -144,7 +169,13 @@ const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Total Workouts</p>
-                  <h3 className="text-2xl font-bold">{workouts.length}</h3>
+                  {isLoading ? (
+                    <div className="flex items-center space-x-2 h-8">
+                      <Spinner size="sm" variant="primary" />
+                    </div>
+                  ) : (
+                    <h3 className="text-2xl font-bold">{workouts.length}</h3>
+                  )}
                 </div>
               </div>
               <BarChart className="w-12 h-12 text-gray-200" />
@@ -165,36 +196,42 @@ const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
             <Button 
               className="w-full justify-start bg-health-primary hover:bg-health-secondary"
               onClick={() => handleQuickAdd("Running", 30, 300, "Medium")}
+              disabled={isLoading}
             >
               <Play className="w-4 h-4 mr-2" /> 30 min Running
             </Button>
             <Button 
               className="w-full justify-start bg-health-primary hover:bg-health-secondary"
               onClick={() => handleQuickAdd("Walking", 45, 200, "Low")}
+              disabled={isLoading}
             >
               <Play className="w-4 h-4 mr-2" /> 45 min Walking
             </Button>
             <Button 
               className="w-full justify-start bg-health-primary hover:bg-health-secondary"
               onClick={() => handleQuickAdd("Cycling", 40, 350, "Medium")}
+              disabled={isLoading}
             >
               <Play className="w-4 h-4 mr-2" /> 40 min Cycling
             </Button>
             <Button 
               className="w-full justify-start bg-health-primary hover:bg-health-secondary"
               onClick={() => handleQuickAdd("Strength Training", 60, 450, "High")}
+              disabled={isLoading}
             >
               <Play className="w-4 h-4 mr-2" /> 60 min Strength
             </Button>
             <Button 
               className="w-full justify-start bg-health-primary hover:bg-health-secondary"
               onClick={() => handleQuickAdd("HIIT", 25, 300, "High")}
+              disabled={isLoading}
             >
               <Play className="w-4 h-4 mr-2" /> 25 min HIIT
             </Button>
             <Button 
               className="w-full justify-start bg-health-primary hover:bg-health-secondary"
               onClick={() => handleQuickAdd("Yoga", 50, 180, "Low")}
+              disabled={isLoading}
             >
               <Play className="w-4 h-4 mr-2" /> 50 min Yoga
             </Button>
@@ -202,7 +239,7 @@ const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
           <CardFooter>
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
               <DialogTrigger asChild>
-                <Button variant="outline" className="w-full flex items-center gap-2">
+                <Button variant="outline" className="w-full flex items-center gap-2" disabled={isLoading}>
                   <Plus className="w-4 h-4" /> Custom Workout
                 </Button>
               </DialogTrigger>
@@ -276,8 +313,17 @@ const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
                   </div>
                 </div>
                 <DialogFooter>
-                  <Button variant="outline" onClick={() => setDialogOpen(false)}>Cancel</Button>
-                  <Button onClick={handleAddWorkout}>Save Workout</Button>
+                  <Button variant="outline" onClick={() => setDialogOpen(false)} disabled={isLoading}>Cancel</Button>
+                  <Button onClick={handleAddWorkout} disabled={isLoading}>
+                    {isLoading ? (
+                      <>
+                        <Spinner size="sm" className="mr-2" />
+                        Saving...
+                      </>
+                    ) : (
+                      'Save Workout'
+                    )}
+                  </Button>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
@@ -297,7 +343,11 @@ const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
               </TabsList>
               <TabsContent value="all">
                 <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
-                  {workouts.length === 0 ? (
+                  {isLoading ? (
+                    <div className="flex justify-center items-center py-10">
+                      <Spinner size="lg" variant="primary" />
+                    </div>
+                  ) : workouts.length === 0 ? (
                     <div className="text-center py-10 text-gray-500">
                       <Activity className="w-12 h-12 mx-auto mb-2 opacity-20" />
                       <p>No workout history available</p>
@@ -338,14 +388,15 @@ const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
                             <span>{workout.calories}</span>
                           </div>
                           <div className="flex gap-1">
-                            <Button variant="ghost" size="icon" className="h-8 w-8">
-                              <Edit className="w-4 h-4" />
-                            </Button>
                             <Button 
                               variant="ghost" 
                               size="icon" 
                               className="h-8 w-8 text-red-500 hover:text-red-700 hover:bg-red-50"
-                              onClick={() => deleteWorkout(workout.id)}
+                              onClick={() => {
+                                console.log("Delete button clicked, workout ID:", workout.id, "Type:", typeof workout.id);
+                                deleteWorkout(workout.id);
+                              }}
+                              disabled={isLoading}
                             >
                               <Trash2 className="w-4 h-4" />
                             </Button>
@@ -358,7 +409,11 @@ const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
               </TabsContent>
               <TabsContent value="today">
                 <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
-                  {todayWorkouts.length === 0 ? (
+                  {isLoading ? (
+                    <div className="flex justify-center items-center py-10">
+                      <Spinner size="lg" variant="primary" />
+                    </div>
+                  ) : todayWorkouts.length === 0 ? (
                     <div className="text-center py-10 text-gray-500">
                       <Activity className="w-12 h-12 mx-auto mb-2 opacity-20" />
                       <p>No workouts logged today</p>
@@ -399,14 +454,15 @@ const WorkoutTracker: React.FC<WorkoutTrackerProps> = ({
                             <span>{workout.calories}</span>
                           </div>
                           <div className="flex gap-1">
-                            <Button variant="ghost" size="icon" className="h-8 w-8">
-                              <Edit className="w-4 h-4" />
-                            </Button>
                             <Button 
                               variant="ghost" 
                               size="icon" 
                               className="h-8 w-8 text-red-500 hover:text-red-700 hover:bg-red-50"
-                              onClick={() => deleteWorkout(workout.id)}
+                              onClick={() => {
+                                console.log("Delete button clicked, workout ID:", workout.id, "Type:", typeof workout.id);
+                                deleteWorkout(workout.id);
+                              }}
+                              disabled={isLoading}
                             >
                               <Trash2 className="w-4 h-4" />
                             </Button>
