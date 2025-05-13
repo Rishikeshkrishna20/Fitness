@@ -28,8 +28,8 @@ const random = (min: number, max: number): number => {
 // Mock current user
 export const currentUser: User = {
   id: uuidv4(),
-  email: "johndoe@example.com",
-  name: "John Doe",
+  email: "RohanDubey@example.com",
+  name: "Rohan Dubey",
   height: 178,
   weight: 75,
   goal: "Improve overall fitness and establish healthy habits",
@@ -117,7 +117,7 @@ export const mealLogs: MealLog[] = [
   },
   {
     id: uuidv4(),
-    name: "Chicken salad",
+    name: "protein salad",
     calories: 450,
     protein: 35,
     carbs: 20,

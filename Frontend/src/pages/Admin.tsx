@@ -1,5 +1,7 @@
 
 import React, { useState } from 'react';
+import SleepDialog from '../components/ui/SleepDialog';
+import GoalDialog from '../components/ui/GoalDialog';
 import { useNavigate } from 'react-router-dom';
 import { Activity, Users, Settings, Clipboard, BarChart, Droplets, Coffee, Moon, Heart, PencilRuler, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -18,6 +20,8 @@ import AdminGoals from '@/components/admin/AdminGoals';
 const Admin: React.FC = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<string>('users');
+  const [showGoalDialog, setShowGoalDialog] = useState(false);
+
 
   const renderContent = () => {
     switch (activeTab) {
@@ -43,6 +47,7 @@ const Admin: React.FC = () => {
         return <AdminUsers />;
     }
   };
+  const [showSleepDialog, setShowSleepDialog] = useState<boolean>(false);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -63,7 +68,7 @@ const Admin: React.FC = () => {
                 <div className="relative pulsing-ring rounded-full p-1">
                   <Activity className="w-6 h-6 text-white" />
                 </div>
-                <h1 className="text-2xl font-bold text-white">LifePulse Admin</h1>
+                <h1 className="text-2xl font-bold text-white">FitTrack Admin</h1>
               </div>
             </div>
           </div>
@@ -140,10 +145,14 @@ const Admin: React.FC = () => {
                   }`}
                 >
                   <Moon className="w-5 h-5" />
-                  <span>Sleep</span>
+                  <span onClick={() => setShowSleepDialog(true)}
+        >Sleep</span>
+        {showSleepDialog && (
+        <SleepDialog onClose={() => setShowSleepDialog(false)} />
+      )}
                 </button>
               </li>
-              <li>
+              {/* <li>
                 <button
                   onClick={() => setActiveTab('vitals')}
                   className={`w-full flex items-center gap-2 px-3 py-2 rounded-md transition ${
@@ -181,7 +190,7 @@ const Admin: React.FC = () => {
                   <Clipboard className="w-5 h-5" />
                   <span>Medications</span>
                 </button>
-              </li>
+              </li> */}
               <li>
                 <button
                   onClick={() => setActiveTab('goals')}
@@ -192,7 +201,8 @@ const Admin: React.FC = () => {
                   }`}
                 >
                   <PencilRuler className="w-5 h-5" />
-                  <span>Goals</span>
+                  <span onClick={() => setShowGoalDialog(true)}>Goals</span>
+                  {showGoalDialog && <GoalDialog onClose={() => setShowGoalDialog(false)} />}
                 </button>
               </li>
               <li>

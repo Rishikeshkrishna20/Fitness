@@ -4,10 +4,27 @@ Serializers for the users app.
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from .models import UserPreference
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
 
 User = get_user_model()
 
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
 
+        # Add custom user data
+        user = self.user
+        data['user'] = {
+            'id': user.id,
+            'username': user.username,
+            'email': user.email,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+        }
+
+        return data
+    
 class UserSerializer(serializers.ModelSerializer):
     """Serializer for the User model."""
 

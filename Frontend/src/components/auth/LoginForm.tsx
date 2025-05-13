@@ -156,8 +156,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, onShowRegister }) => {
       }
 
       const data = await res.json();
+      console.log(data)
       localStorage.setItem("access", data.access);
       localStorage.setItem("refresh", data.refresh);
+      localStorage.setItem("user", JSON.stringify(data.user));
       alert("✅ Login successful");
 
       // Call the onLogin callback if you want to use the response data

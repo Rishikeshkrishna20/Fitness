@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button';
 
 interface HeaderProps {
   user: {
-    name: string;
-    avatar?: string;
+    first_name: string;
+    // avatar?: string;
   } | null;
   onLogout: () => void;
   selectedTab: string;
@@ -32,7 +32,7 @@ const Header: React.FC<HeaderProps> = ({
             <div className="relative pulsing-ring rounded-full p-1">
               <Activity className="w-7 h-7" />
             </div>
-            <h1 className="text-2xl font-bold hidden sm:block">LifePulse</h1>
+            <h1 className="text-2xl font-bold hidden sm:block">FitTrack</h1>
           </div>
 
           {isMobile ? (
@@ -86,7 +86,7 @@ const Header: React.FC<HeaderProps> = ({
                       <Bell className="w-5 h-5" />
                     </Button>
                     <div className="flex items-center gap-2">
-                      {user.avatar ? (
+                      {/* {user.avatar ? (
                         <img 
                           src={user.avatar} 
                           alt={user.name} 
@@ -96,8 +96,8 @@ const Header: React.FC<HeaderProps> = ({
                         <div className="bg-white/20 rounded-full p-1">
                           <User className="w-6 h-6" />
                         </div>
-                      )}
-                      <span className="font-medium text-sm">{user.name}</span>
+                      )} */}
+                      <span className="font-medium text-sm">{user?.first_name}</span>
                     </div>
                     <Button
                       variant="ghost"

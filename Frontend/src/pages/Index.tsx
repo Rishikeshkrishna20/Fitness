@@ -197,12 +197,15 @@ const Index = () => {
 
   useEffect(() => {
      const accessToken = localStorage.getItem("access");
+      const user = localStorage.getItem("user");
      accessToken ? setIsAuthenticated(true) : setIsAuthenticated(false)
+     user ?  setUser(JSON.parse(user)) :setUser(null)
 
     
   }, []);
 
   // Render different sections based on selected tab
+  console.log(user)
   const renderContent = () => {
     switch (selectedTab) {
       case 'dashboard':
@@ -260,7 +263,7 @@ const Index = () => {
                 <div className="relative pulsing-ring rounded-full p-1">
                   <Activity className="w-8 h-8 text-white" />
                 </div>
-                <h1 className="text-3xl font-bold text-white">LifePulse</h1>
+                <h1 className="text-3xl font-bold text-white">FitTrack</h1>
               </div>
               <Link to="/admin">
                 <Button variant="outline" size="sm" className="bg-white/20 border-white/10 text-white hover:bg-white/30">
@@ -282,7 +285,7 @@ const Index = () => {
             )}
           </div>
         </main>
-
+            
         {/* Footer */}
         <Footer />
       </div>
@@ -321,7 +324,6 @@ const Index = () => {
         </div>
         {renderContent()}
       </main>
-      
       <Footer />
     </div>
   );

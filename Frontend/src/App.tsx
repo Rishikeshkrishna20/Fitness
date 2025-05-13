@@ -42,37 +42,29 @@ import RegisterForm from "@/components/auth/RegisterForm";
 import Index from "./pages/Index";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import ContactUs from './pages/ContactUs';
 
 // Initialize React Query client
 const queryClient = new QueryClient();
 
-const App: React.FC = () => {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        {/* Toast Notifications */}
-        <Toaster />
-        <Sonner />
-
-        {/* Router Setup */}
-        <BrowserRouter>
-          <Routes>
-            {/* Auth Routes */}
-            <Route path="/login" element={<LoginForm />} />
-            <Route path="/register" element={<RegisterForm />} />
-
-            {/* Redirect root to login */}
-            <Route path="/" element={<Navigate to="/login" replace />} />
-
-            {/* App Pages */}
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/dashboard" element={<Index />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
-  );
-};
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/dashboard" element={<Index />} />
+          <Route path="/admin" element={<Admin />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+         <Route path="/contact-us" element={<ContactUs />} />
+        </Routes>
+      </BrowserRouter>
+    </TooltipProvider>
+  </QueryClientProvider>
+);
 
 export default App;

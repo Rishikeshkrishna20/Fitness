@@ -49,7 +49,7 @@ const DashboardOverview: React.FC<DashboardOverviewProps> = ({
         <CardHeader className="pb-3">
           <div className="flex justify-between items-center">
             <div>
-              <CardTitle className="text-2xl font-bold">Welcome back, {user?.name}!</CardTitle>
+              <CardTitle className="text-2xl font-bold">Welcome back, {user?.first_name}!</CardTitle>
               <CardDescription className="text-gray-600 mt-1">
                 {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
               </CardDescription>
